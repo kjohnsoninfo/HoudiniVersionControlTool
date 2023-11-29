@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<shelfDocument>
+  <!--This file contains definitions of shelves, toolbars, and tools.
+It should not be hand-edited when it is being used by the
+application. Note, that two definitions of the same element are
+not allowed in a single file. -->
+  <tool label="Version Control Tool" name="version_control">
+    <script scriptType="python"><![CDATA[
+from PySide2 import QtCore
+from PySide2 import QtWidgets
+
+class FontDemo(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        QtWidgets.QWidget.__init__(self, parent)
+
+        hbox = QtWidgets.QHBoxLayout()
+
+        self.setGeometry(500, 300, 250, 110)
+        self.setWindowTitle('Font Demo')
+
+        button = QtWidgets.QPushButton('Change Font', self)
+        button.setFocusPolicy(QtCore.Qt.NoFocus)
+        button.move(20, 20)
+
+        hbox.addWidget(button)
+
+        self.connect(button, QtCore.SIGNAL('clicked()'), self.showDialog)
+
+        self.label = QtWidgets.QLabel('This is some sample text', self)
+        self.label.move(130, 20)
+
+        hbox.addWidget(self.label, 1)
+        self.setLayout(hbox)
+
+    def showDialog(self):
+        ok, font = QtWidgets.QFontDialog.getFont()
+        if ok:
+            self.label.setFont(font)
+
+dialog = FontDemo()
+dialog.show()
+        ]]></script>
+  </tool>
+</shelfDocument>
