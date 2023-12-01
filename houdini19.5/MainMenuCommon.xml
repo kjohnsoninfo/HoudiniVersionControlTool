@@ -5,7 +5,10 @@
             <scriptItem id="h.saveVersion">
                 <label>Save Version</label>
                 <insertAfter>h.save</insertAfter>
-                <scriptPath>$PACKAGE_PATH/houdini19.5/python3.9libs/incrementSave.py</scriptPath>
+                <scriptCode><![CDATA[
+import incrementSave
+incrementSave.main()
+                ]]></scriptCode>
             </scriptItem>
         </subMenu>
     </menuBar>

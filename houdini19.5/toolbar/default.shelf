@@ -5,7 +5,7 @@
  Note, that two definitions of the same element are not allowed in
  a single file. -->
 
-  <toolshelf name="kj_houdini_tools" label="Houdini Tools">
+  <toolshelf name="houdini_tools_kj" label="Houdini Tools">
     <memberTool name="version_control"/>
   </toolshelf>
 </shelfDocument>

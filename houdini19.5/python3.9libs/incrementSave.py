@@ -6,6 +6,7 @@
 # Use new_path to save
 
 import glob
+import hou
 import os
 import re
 
@@ -58,5 +59,6 @@ def main():
 
     hou.hipFile.setName(new_path)
     hou.hipFile.save()
-    
-main()
+
+if __name__ == "__main__":
+    main()
