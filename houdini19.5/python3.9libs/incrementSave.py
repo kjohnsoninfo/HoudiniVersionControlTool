@@ -1,9 +1,9 @@
-# Get current file info
-# Increment version - output new_path
-# Check if path already exists
+# 1) Get current file info
+# 2) Increment version - output new_path
+# 3) Check if path already exists
     # if exists - overwrite vs make latest
     # output new_path based on selection
-# Use new_path to save
+# 4) Use new_path to save
 
 import glob
 import hou
@@ -52,13 +52,23 @@ def main():
         selection = hou.ui.displayCustomConfirmation(
             fr"The file {new_path} already exists. Do you want to overwrite or make a latest version?",
             buttons=("Make Latest", "Overwrite", "Cancel"), close_choice=2)
+        
+        # Make Latest
         if selection == 0:
             new_path = latest_vers(current_vers, current_path)
+        
+        # Overwrite
         elif selection == 1:
             pass
 
-    hou.hipFile.setName(new_path)
-    hou.hipFile.save()
+        # Cancel
+        elif selection == 2:
+            return
+    
+    # Only save if not cancelled
+    if new_path:
+        hou.hipFile.setName(new_path)
+        hou.hipFile.save()
 
 if __name__ == "__main__":
     main()

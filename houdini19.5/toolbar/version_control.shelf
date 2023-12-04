@@ -11,52 +11,82 @@ import re
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
+# local import
 import incrementSave
 
 class VersionControlUI(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(VersionControlUI, self).__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Window)
+
+        # Initialize window
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setObjectName('VersionControlUI')
         self.setWindowTitle('Version Control')
         self.resize(500, 500)
         
+        # Set up widgets
         self.path = self.get_file_path()
-        
-        self.dirmodel = QtWidgets.QFileSystemModel()
-        self.dirmodel.setRootPath(QtCore.QDir.rootPath())
-        self.dirmodel.setFilter(QtCore.QDir.NoDotAndDotDot | QtCore.QDir.Files)
-        self.filter = self.get_filter()
-        self.dirmodel.setNameFilters([self.filter])
-        self.dirmodel.setNameFilterDisables(False)
+        self.dirmodel = self.create_file_model()
+        self.view = self.create_tree_view()
+        self.button_layout = self.create_buttons()
 
-        self.view = QtWidgets.QTreeView(parent=self)
-        self.view.setModel(self.dirmodel)
-        self.view.hideColumn(1)
-        self.view.hideColumn(2)
-        self.view.setRootIndex(self.dirmodel.index(self.path))
-        self.font = QtGui.QFont()
-        self.font.setPointSize(10)
-        self.view.setFont(self.font)
-        self.view.header().resizeSection(0, 325)
-        
-        button_layout = QtWidgets.QHBoxLayout()
-        self.open_button = QtWidgets.QPushButton('Open File', self)
-        self.open_button.adjustSize()
-        # self.open_button.clicked.connect()
-        self.explorer_button = QtWidgets.QPushButton('Open File Explorer', self)
-        self.explorer_button.clicked.connect(self.open_explorer)
-        self.save_button = QtWidgets.QPushButton('Save New Version', self)
-        self.save_button.clicked.connect(self.save_version)
-        button_layout.addWidget(self.save_button)
-        button_layout.addWidget(self.explorer_button)
-        button_layout.addWidget(self.open_button)
-
+        # Set up layout
         outer_layout = QtWidgets.QVBoxLayout()
         outer_layout.addWidget(self.view)
-        outer_layout.addLayout(button_layout)
+        outer_layout.addLayout(self.button_layout)
         outer_layout.setSpacing(15)
+
         self.setLayout(outer_layout)
+
+    # Functions 
+    def create_file_model(self):
+        dirmodel = QtWidgets.QFileSystemModel()
+        dirmodel.setRootPath(QtCore.QDir.rootPath())
+
+        # Filter to show only files that are versions of current file
+        dirmodel.setFilter(QtCore.QDir.NoDotAndDotDot | QtCore.QDir.Files)
+        filter = self.get_filter()
+        dirmodel.setNameFilters([filter])
+        dirmodel.setNameFilterDisables(False) # Hide instead of disable
+
+        return dirmodel
+    
+    def create_tree_view(self):
+        view = QtWidgets.QTreeView(parent=self)
+        view.setModel(self.dirmodel)
+        view.setRootIndex(self.dirmodel.index(self.path))
+
+        # Only show File Name and Edited Date columns
+        view.hideColumn(1)
+        view.hideColumn(2)
+
+        # Resizing
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        view.setFont(font)
+        view.header().resizeSection(0, 325)
+
+        view.doubleClicked.connect(self.open_file)
+
+        return view
+    
+    def create_buttons(self):
+        button_layout = QtWidgets.QHBoxLayout()
+
+        open_button = QtWidgets.QPushButton('Open File', self)
+        open_button.clicked.connect(self.open_file)
+
+        explorer_button = QtWidgets.QPushButton('Open File Explorer', self)
+        explorer_button.clicked.connect(self.open_explorer)
+
+        save_button = QtWidgets.QPushButton('Save New Version', self)
+        save_button.clicked.connect(self.save_version)
+
+        button_layout.addWidget(save_button)
+        button_layout.addWidget(explorer_button)
+        button_layout.addWidget(open_button)
+
+        return button_layout
 
     def get_file_path(self):
         current_path = hou.hipFile.path()
@@ -72,15 +102,16 @@ class VersionControlUI(QtWidgets.QDialog):
         return filter
     
     def open_explorer(self):
-        current_path = hou.hipFile.path()
-        hou.ui.selectFile(current_path)
+        hou.ui.selectFile()
 
-    def open_file(self, file):
-        hou.hipFile.load(file)
+    def open_file(self):
+        index = self.view.currentIndex()
+        file_path = self.dirmodel.filePath(index)
+        hou.hipFile.load(file_path)
 
     def save_version(self):
         incrementSave.main()
-    
+
 ui = VersionControlUI()
 ui.show()
 
