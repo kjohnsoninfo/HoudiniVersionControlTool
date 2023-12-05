@@ -66,6 +66,7 @@ class VersionControlUI(QtWidgets.QDialog):
         view.setFont(font)
         view.header().resizeSection(0, 325)
 
+        view.setSortingEnabled(True)
         view.doubleClicked.connect(self.open_file)
 
         return view

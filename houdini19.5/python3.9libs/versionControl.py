@@ -64,6 +64,7 @@ class VersionControlUI(QtWidgets.QDockWidget):
         view.setFont(font)
         view.header().resizeSection(0, 325)
 
+        view.setSortingEnabled(True)
         view.doubleClicked(self.open_file)
 
         return view
