@@ -62,7 +62,9 @@ Ex) If the filename = i_HDP_010_E10_v001.000029.hip, the tool will save i_HDP_01
 ### Saving an incremented version that already exists
 When saving a new version, the tool always checks if that version already exists within the directory. If the tool detects the file already exists, it will prompt the user for 2 options:
 1. Overwrite the incremented version
-2. Make the new version the latest version in the list 
+2. Make the new version the latest version in the list
+
+![exists prompt](img/existsPrompt.png)
 
 ### Version Control Shelf Tool
 The newly added shelf contains the Version Control tool button.  
