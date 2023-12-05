@@ -5,9 +5,9 @@
 The Houdini Version Control Tool allows a user to increment and save a Houdini file with a version suffix automatically. This can be done via the "File" main menu in the upper toolbar or through the shelf tool.
 
 Features include:
-* Auto-increment and save versions with _v### suffix
-* Add default v001 if file does not have version 
-* Provides user option to overwrite or save as latest version if incremented version already exists
+* Auto-increment and save versions with _v### suffix (also works with _V### if that is existing format)
+* Add default _v001 if file does not have version 
+* User has option to overwrite or save as latest version if incremented version already exists
 * Easily view a list of all versions of the current file via the shelf tool
 * Seamlessly switch between versions by double-clicking to open desired version from the list
 
