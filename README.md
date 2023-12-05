@@ -11,7 +11,7 @@ Features include:
 * Easily view a list of all versions of the current file via the shelf tool
 * Seamlessly switch between versions by double-clicking to open desired version from the list
   
-![save gif](img/testSave.gif)
+![demo gif](img/saveopenDemo.gif)
 
 ### Installation
 
