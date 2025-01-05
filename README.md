@@ -1,6 +1,4 @@
-# Houdini Tools and Scripts
-
-## Houdini Version Control Tool
+# Houdini Version Control Tool
 
 The Houdini Version Control Tool allows a user to increment and save a Houdini file with a version suffix automatically. This can be done via the "File" main menu in the upper toolbar or through the shelf tool.
 
